@@ -1,12 +1,776 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>aisaipapa-omo のページ</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MY JOURNAL ✿</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --pink: #FF2D78;
+      --yellow: #FFE100;
+      --purple: #8B2BE2;
+      --white: #FFFFFF;
+      --black: #1A0A0F;
+      --pink-light: #FFD6E7;
+      --yellow-light: #FFF9C4;
+      --purple-light: #EDD6FF;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--yellow);
+      color: var(--black);
+      font-family: 'Noto Sans JP', sans-serif;
+      overflow-x: hidden;
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='6' fill='%23FF2D78'/%3E%3C/svg%3E") 12 12, auto;
+    }
+
+    /* ── Marquee ── */
+    .marquee-bar {
+      background: var(--pink);
+      color: var(--yellow);
+      padding: 0.5rem 0;
+      overflow: hidden;
+      white-space: nowrap;
+      border-bottom: 3px solid var(--black);
+    }
+
+    .marquee-track {
+      display: inline-block;
+      animation: marquee 18s linear infinite;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* ── Header ── */
+    header {
+      background: var(--white);
+      border-bottom: 4px solid var(--black);
+      position: sticky;
+      top: 0;
+      z-index: 99;
+      box-shadow: 0 6px 0 var(--black);
+    }
+
+    /* 上段：ロゴ + サブナビ */
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 3rem;
+      border-bottom: 2px solid var(--pink-light);
+    }
+
+    .logo {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--pink);
+      text-shadow: 3px 3px 0 var(--black);
+      letter-spacing: 0.05em;
+    }
+
+    .logo span { color: var(--purple); }
+
+    .header-sub-nav {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .header-sub-nav a {
+      text-decoration: none;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.35rem 0.9rem;
+      border: 2.5px solid var(--black);
+      border-radius: 50px;
+      color: var(--black);
+      background: var(--yellow);
+      transition: all 0.15s ease;
+      box-shadow: 3px 3px 0 var(--black);
+    }
+
+    .header-sub-nav a:hover {
+      background: var(--pink);
+      color: var(--white);
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0 var(--black);
+    }
+
+    /* 下段：メニュータブ */
+    .header-tabs {
+      display: flex;
+      padding: 0 2rem;
+      overflow-x: auto;
+    }
+
+    .header-tabs::-webkit-scrollbar { display: none; }
+
+    .tab {
+      text-decoration: none;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--black);
+      padding: 0.75rem 1.8rem;
+      border-right: 2px solid var(--pink-light);
+      white-space: nowrap;
+      position: relative;
+      transition: color 0.2s, background 0.2s;
+    }
+
+    .tab:first-child { border-left: 2px solid var(--pink-light); }
+
+    .tab::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 4px;
+      background: var(--pink);
+      border-radius: 2px 2px 0 0;
+      transition: width 0.25s ease;
+    }
+
+    .tab:hover { color: var(--pink); background: var(--pink-light); }
+    .tab:hover::after { width: 100%; }
+
+    .tab.active {
+      color: var(--pink);
+      background: var(--yellow-light);
+    }
+
+    .tab.active::after { width: 100%; }
+
+    /* ── Hero Slideshow ── */
+    .hero {
+      position: relative;
+      min-height: 88vh;
+      border-bottom: 4px solid var(--black);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+    }
+
+    /* スライド背景 */
+    .slides {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 1.2s ease;
+    }
+
+    .slide.active { opacity: 1; }
+
+    /* ダミー画像（グラデーション） — 実際の写真に差し替えてください */
+    .slide:nth-child(1) {
+      background-image:
+        linear-gradient(135deg, rgba(255,45,120,0.7) 0%, rgba(139,43,226,0.5) 100%),
+        url('https://images.unsplash.com/photo-1490730141103-6cac27aaab94?w=1600&auto=format&fit=crop');
+    }
+    .slide:nth-child(2) {
+      background-image:
+        linear-gradient(135deg, rgba(255,225,0,0.6) 0%, rgba(255,45,120,0.5) 100%),
+        url('https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=1600&auto=format&fit=crop');
+    }
+    .slide:nth-child(3) {
+      background-image:
+        linear-gradient(135deg, rgba(139,43,226,0.65) 0%, rgba(255,45,120,0.5) 100%),
+        url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1600&auto=format&fit=crop');
+    }
+    .slide:nth-child(4) {
+      background-image:
+        linear-gradient(135deg, rgba(255,45,120,0.6) 0%, rgba(255,225,0,0.5) 100%),
+        url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1600&auto=format&fit=crop');
+    }
+
+    /* 暗めオーバーレイ */
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.25);
+      z-index: 1;
+    }
+
+    /* コンテンツ */
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      padding: 5rem 4rem;
+      gap: 4rem;
+    }
+
+    .hero-left {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: var(--yellow);
+      color: var(--black);
+      font-family: 'Fredoka', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.3rem 1rem;
+      border: 2.5px solid var(--black);
+      border-radius: 50px;
+      margin-bottom: 1.5rem;
+      box-shadow: 3px 3px 0 var(--black);
+      animation: pop 0.5s ease 0.3s both;
+    }
+
+    @keyframes pop {
+      from { transform: scale(0.5); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .hero-title {
+      font-family: 'Fredoka', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.15;
+      text-shadow: 3px 3px 0 rgba(0,0,0,0.5);
+      margin-bottom: 1.2rem;
+      animation: slideIn 0.7s ease 0.1s both;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(-40px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    .hero-sub {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.9);
+      line-height: 1.9;
+      margin-bottom: 2.5rem;
+      max-width: 34ch;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+      animation: slideIn 0.7s ease 0.3s both;
+    }
+
+    .btn-main {
+      display: inline-block;
+      text-decoration: none;
+      background: var(--yellow);
+      color: var(--black);
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      padding: 0.8rem 2.2rem;
+      border: 3px solid var(--black);
+      border-radius: 50px;
+      box-shadow: 5px 5px 0 var(--black);
+      transition: all 0.15s ease;
+      animation: pop 0.5s ease 0.5s both;
+    }
+
+    .btn-main:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 8px 8px 0 var(--black);
+    }
+
+    /* 右サイドカード */
+    .hero-right {
+      width: 320px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .featured-label {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      color: var(--yellow);
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    }
+
+    .mini-card {
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(8px);
+      border: 3px solid var(--black);
+      border-radius: 16px;
+      padding: 1.2rem 1.4rem;
+      box-shadow: 5px 5px 0 var(--black);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      cursor: pointer;
+    }
+
+    .mini-card:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 8px 8px 0 var(--black);
+    }
+
+    .mini-card .cat {
+      display: inline-block;
+      background: var(--purple);
+      color: var(--white);
+      font-family: 'Fredoka', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 600;
+      padding: 0.15rem 0.7rem;
+      border-radius: 50px;
+      margin-bottom: 0.4rem;
+    }
+
+    .mini-card h3 {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 0.2rem;
+    }
+
+    .mini-card p {
+      font-size: 0.78rem;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    /* ドットインジケーター */
+    .slide-dots {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      display: flex;
+      gap: 0.6rem;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 2.5px solid var(--white);
+      background: transparent;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+    }
+
+    .dot.active {
+      background: var(--yellow);
+      border-color: var(--black);
+      transform: scale(1.3);
+    }
+
+
+    /* ── Posts section ── */
+    .section {
+      padding: 5rem 3rem;
+    }
+
+    .section-title {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 4px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--pink) 0, var(--pink) 14px,
+        var(--yellow) 14px, var(--yellow) 28px,
+        var(--purple) 28px, var(--purple) 42px
+      );
+      border-radius: 2px;
+    }
+
+    .posts-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .post-card {
+      background: var(--white);
+      border: 3px solid var(--black);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 6px 6px 0 var(--black);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      cursor: pointer;
+    }
+
+    .post-card:hover {
+      transform: translate(-4px, -4px);
+      box-shadow: 10px 10px 0 var(--black);
+    }
+
+    .card-thumb {
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      border-bottom: 3px solid var(--black);
+    }
+
+    .card-thumb.pink { background: var(--pink-light); }
+    .card-thumb.yellow { background: var(--yellow-light); }
+    .card-thumb.purple { background: var(--purple-light); }
+
+    .card-body {
+      padding: 1.4rem;
+    }
+
+    .card-cat {
+      display: inline-block;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 0.2rem 0.8rem;
+      border-radius: 50px;
+      border: 2px solid var(--black);
+      margin-bottom: 0.7rem;
+    }
+
+    .card-cat.c-pink { background: var(--pink); color: var(--white); }
+    .card-cat.c-yellow { background: var(--yellow); color: var(--black); }
+    .card-cat.c-purple { background: var(--purple); color: var(--white); }
+
+    .card-title {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 0.6rem;
+    }
+
+    .card-excerpt {
+      font-size: 0.82rem;
+      color: #555;
+      line-height: 1.75;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-bottom: 0.8rem;
+    }
+
+    .card-date {
+      font-size: 0.7rem;
+      color: #999;
+      font-family: 'Fredoka', sans-serif;
+    }
+
+    /* ── Bottom strip ── */
+    .strip {
+      background: var(--purple);
+      border-top: 4px solid var(--black);
+      border-bottom: 4px solid var(--black);
+      padding: 4rem 3rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+
+    .about-box {
+      background: var(--white);
+      border: 3px solid var(--black);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 6px 6px 0 var(--black);
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+    }
+
+    .avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: var(--pink);
+      border: 3px solid var(--black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      flex-shrink: 0;
+      box-shadow: 3px 3px 0 var(--black);
+    }
+
+    .about-box h3 {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .about-box p {
+      font-size: 0.85rem;
+      color: #555;
+      line-height: 1.8;
+    }
+
+    .tags-box {
+      background: var(--yellow);
+      border: 3px solid var(--black);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 6px 6px 0 var(--black);
+    }
+
+    .tags-box h3 {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 1.2rem;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 0.35rem 1rem;
+      border: 2.5px solid var(--black);
+      border-radius: 50px;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      background: var(--white);
+      cursor: pointer;
+      box-shadow: 3px 3px 0 var(--black);
+      transition: all 0.15s ease;
+    }
+
+    .tag:hover {
+      background: var(--pink);
+      color: var(--white);
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0 var(--black);
+    }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--pink);
+      border-top: 4px solid var(--black);
+      padding: 2rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer .logo { font-size: 1.4rem; }
+
+    footer p {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--white);
+      text-shadow: 1px 1px 0 var(--black);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      header { padding: 1rem 1.5rem; }
+      .header-sub-nav { display: none; }
+      .header-tabs { padding: 0 0.5rem; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { display: none; }
+      .hero-left { padding: 3rem 2rem; }
+      .section { padding: 3rem 1.5rem; }
+      .posts-grid { grid-template-columns: 1fr; }
+      .strip { grid-template-columns: 1fr; padding: 3rem 1.5rem; }
+      footer { flex-direction: column; gap: 0.8rem; text-align: center; padding: 2rem; }
+    }
+  </style>
 </head>
 <body>
-    <h1>ようこそ!</h1>
-    <p>これはaisaipapa-omoのサンプルページです。</p>
+
+  <!-- Marquee -->
+  <div class="marquee-bar">
+    <span class="marquee-track">
+      ✿ MY JOURNAL ✿ 日々のきろく ✿ TRAVEL ✿ FOOD ✿ BOOKS ✿ DAILY LIFE ✿ 旅と暮らし ✿ MY JOURNAL ✿ 日々のきろく ✿ TRAVEL ✿ FOOD ✿ BOOKS ✿ DAILY LIFE ✿ 旅と暮らし ✿ MY JOURNAL ✿ 日々のきろく ✿ TRAVEL ✿ FOOD ✿ BOOKS ✿ DAILY LIFE ✿ 旅と暮らし ✿
+    </span>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="header-top">
+      <div class="logo">MY<span>✿</span>JOURNAL</div>
+      <nav class="header-sub-nav">
+        <a href="#">ホーム</a>
+        <a href="#">about</a>
+      </nav>
+    </div>
+    <div class="header-tabs">
+      <a href="#" class="tab active">バックナンバー</a>
+      <a href="#" class="tab">プロフィール</a>
+      <a href="#" class="tab">写真</a>
+    </div>
+  </header>
+
+  <!-- Hero Slideshow -->
+  <section class="hero">
+    <div class="slides">
+      <div class="slide active"></div>
+      <div class="slide"></div>
+      <div class="slide"></div>
+      <div class="slide"></div>
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-left">
+        <span class="hero-badge">✨ NEW POST</span>
+        <h1 class="hero-title">梅雨の晴れ間に<br>見つけたもの</h1>
+        <p class="hero-sub">雨が続いた週末、久しぶりに近所を散歩した。空気がやわらかくて、紫陽花が思っていたより濃い青をしていた。</p>
+        <a href="#" class="btn-main">続きを読む →</a>
+      </div>
+      <div class="hero-right">
+        <p class="featured-label">✿ RECENT POSTS</p>
+        <div class="mini-card">
+          <span class="cat">旅の話</span>
+          <h3>京都、朝5時の哲学の道</h3>
+          <p>観光客が来る前の静けさは、ことばにならない特別なもの。</p>
+        </div>
+        <div class="mini-card">
+          <span class="cat">料理</span>
+          <h3>はじめて作ったパン、失敗の記録</h3>
+          <p>焦げたパンも、なぜか愛おしかった。</p>
+        </div>
+        <div class="mini-card">
+          <span class="cat">日常</span>
+          <h3>行きつけの喫茶店が閉まるまでの話</h3>
+          <p>10年通った場所がなくなる。</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide-dots">
+      <div class="dot active" onclick="goToSlide(0)"></div>
+      <div class="dot" onclick="goToSlide(1)"></div>
+      <div class="dot" onclick="goToSlide(2)"></div>
+      <div class="dot" onclick="goToSlide(3)"></div>
+    </div>
+  </section>
+
+  <!-- Posts -->
+  <section class="section">
+    <h2 class="section-title">🌸 最近の投稿</h2>
+    <div class="posts-grid">
+      <article class="post-card">
+        <div class="card-thumb pink">☕</div>
+        <div class="card-body">
+          <span class="card-cat c-pink">暮らし</span>
+          <h3 class="card-title">行きつけの喫茶店が閉まるまでの話</h3>
+          <p class="card-excerpt">10年通った場所がなくなる。最後の日に何を頼んだか、ずっと覚えていると思う。</p>
+          <p class="card-date">2026.05.30</p>
+        </div>
+      </article>
+      <article class="post-card">
+        <div class="card-thumb yellow">📚</div>
+        <div class="card-body">
+          <span class="card-cat c-yellow">読書</span>
+          <h3 class="card-title">村上春樹を久しぶりに読んで</h3>
+          <p class="card-excerpt">10代で読んだときと、全然ちがうところに引っかかった。それが不思議でおもしろい。</p>
+          <p class="card-date">2026.05.22</p>
+        </div>
+      </article>
+      <article class="post-card">
+        <div class="card-thumb purple">🌿</div>
+        <div class="card-body">
+          <span class="card-cat c-purple">植物</span>
+          <h3 class="card-title">ベランダ菜園、3度目の正直</h3>
+          <p class="card-excerpt">また枯らしてしまった。でも今度こそと思って、また種を買った。</p>
+          <p class="card-date">2026.05.15</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- About + Tags -->
+  <div class="strip">
+    <div class="about-box">
+      <div class="avatar">🌸</div>
+      <div>
+        <h3>こんにちは、Yuiです！</h3>
+        <p>東京在住。旅と料理と読書が好き。日常の中で「あ、いいな」と思ったことをここに書いています。うまく書こうとせず、ただ残しておきたいから書いている、そんなブログです。</p>
+      </div>
+    </div>
+    <div class="tags-box">
+      <h3>🏷️ タグ一覧</h3>
+      <div class="tags">
+        <span class="tag">旅</span>
+        <span class="tag">料理</span>
+        <span class="tag">読書</span>
+        <span class="tag">東京</span>
+        <span class="tag">京都</span>
+        <span class="tag">映画</span>
+        <span class="tag">植物</span>
+        <span class="tag">喫茶店</span>
+        <span class="tag">写真</span>
+        <span class="tag">音楽</span>
+        <span class="tag">日常</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="logo">MY<span>✿</span>JOURNAL</div>
+    <p>written with love ✿ 2026</p>
+    <p>日々のきろく</p>
+  </footer>
+
+  <script>
+    let current = 0;
+    const slides = document.querySelectorAll(".slide");
+    const dots = document.querySelectorAll(".dot");
+    let timer = setInterval(() => changeSlide(1), 5000);
+
+    function goToSlide(n) {
+      slides[current].classList.remove("active");
+      dots[current].classList.remove("active");
+      current = n;
+      slides[current].classList.add("active");
+      dots[current].classList.add("active");
+      clearInterval(timer);
+      timer = setInterval(() => changeSlide(1), 5000);
+    }
+
+    function changeSlide(dir) {
+      goToSlide((current + dir + slides.length) % slides.length);
+    }
+  </script>
 </body>
 </html>
