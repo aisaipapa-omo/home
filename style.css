@@ -510,6 +510,9 @@ header {
   font-size: 2rem;
   flex-shrink: 0;
   box-shadow: 0 4px 12px var(--shadow);
+  object-fit: cover;
+  object-position: center top;
+  display: block;
 }
 
 .about-box h3 {
