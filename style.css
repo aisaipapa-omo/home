@@ -64,6 +64,16 @@ header {
   border-bottom: 2px solid var(--pink-light);
 }
 
+@media (max-width: 600px) {
+  .header-top {
+    padding: 0.75rem 1rem;  /* 左右の余白を縮小 */
+  }
+
+  .logo-img {
+    height: clamp(36px, 10vw, 80px);  /* スマホではさらに小さく */
+  }
+}
+
 .logo {
   display: flex;
   align-items: center;
@@ -72,7 +82,7 @@ header {
 .logo span { color: var(--purple); }
 
 .logo-img {
-  height: 150px;        /* ヘッダーの高さに合わせて調整 */
+  height: clamp(40px, 8vw, 90px);        /* ヘッダーの高さに合わせて調整 */
   width: auto;         /* 縦横比を維持 */
   display: block;
 }
