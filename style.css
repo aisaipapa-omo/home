@@ -65,18 +65,14 @@ header {
 }
 
 .logo {
-  font-family: 'Fredoka', sans-serif;
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--pink);
-  text-shadow: 2px 2px 6px rgba(180, 150, 130, 0.4);
-  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
 }
 
 .logo span { color: var(--purple); }
 
 .logo-img {
-  height: 52px;        /* ヘッダーの高さに合わせて調整 */
+  height: 150px;        /* ヘッダーの高さに合わせて調整 */
   width: auto;         /* 縦横比を維持 */
   display: block;
 }
