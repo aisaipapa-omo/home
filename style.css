@@ -75,6 +75,12 @@ header {
 
 .logo span { color: var(--purple); }
 
+.logo-img {
+  height: 52px;        /* ヘッダーの高さに合わせて調整 */
+  width: auto;         /* 縦横比を維持 */
+  display: block;
+}
+
 .header-sub-nav {
   display: flex;
   gap: 0.5rem;
