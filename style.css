@@ -3,7 +3,7 @@
 :root {
   --pink: #FE75BF;
   --yellow: #FFE8B8;
-  --purple: #B8C9E8;
+  --purple: #D7B6FF;
   --white: #FFFDF8;
   --black: #6B5847;
   --pink-light: #FCE4E8;
@@ -195,10 +195,7 @@ header {
 }
 
 .hero-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(80, 60, 50, 0.15);
-  z-index: 1;
+  background: transparent;
 }
 
 .hero-content {
@@ -302,7 +299,7 @@ header {
 }
 
 .mini-card {
-  background: rgba(255,255,255,0.92);
+  background: rgba(255,255,255,0.25);
   backdrop-filter: blur(8px);
   border: 1.5px solid var(--black);
   border-radius: 16px;
